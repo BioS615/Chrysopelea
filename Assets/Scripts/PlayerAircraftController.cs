@@ -139,16 +139,20 @@ public class PlayerAircraftController : MonoBehaviour
 
     private void BeginDeceleration()
     {
+        elapsedTime = 0;
         isDecelerating = true;
     }
 
     private void Decelerate()
     {
-        currentSpeed = Mathf.Clamp(currentSpeed - deceleration * Time.deltaTime, 0f, maxSpeed);
+        elapsedTime += Time.deltaTime;
+        deltaV = Mathf.Lerp(deltaV, acceleration, elapsedTime / deltaVRampupTime);
+        currentSpeed = Mathf.Clamp(currentSpeed - deltaV * Time.deltaTime, 0f, maxSpeed);
     }
 
     private void StopDeceleration()
     {
+        elapsedTime = 0;
         isDecelerating = false;
     }
 
